@@ -28,7 +28,8 @@ flowchart LR
     ESP -->|GPIO 27| HUM[Humidity/fan relay K2]
     ESP -->|GPIO 18 PWM| SERVO[Tray servo]
     ESP -->|I2C| OLED[OLED display]
-    ESP -->|GPIO 25| BUZZ[Buzzer]
+    ESP -->|GPIO 25 via resistor| DRIVER[2N2222 driver]
+    DRIVER --> BUZZ[Buzzer + zener protection]
     ESP <-->|Wi-Fi| BLYNK[Blynk Cloud]
 ```
 
@@ -39,14 +40,20 @@ The complete project requirements are preserved in the [original project brief](
 | ESP32 connection | Peripheral | Function |
 | --- | --- | --- |
 | GPIO 4 | DHT11 data | Temperature and humidity |
-| GPIO 18 | Servo signal | Egg-tray position |
+| GPIO 18 | Servo signal | Egg-tray position; powered from the buck converter's 5 V output |
 | GPIO 21 | OLED SDA | I2C data |
 | GPIO 22 | OLED SCL | I2C clock |
-| GPIO 25 | Buzzer signal | Local alarm |
+| GPIO 25 | 2N2222 base resistor | Low-side buzzer driver with zener protection |
 | GPIO 26 | Relay K1 input | Heater control, active-low |
 | GPIO 27 | Relay K2 input | Humidity/fan control, active-low |
 
 See the [wiring guide](docs/WIRING.md) and [draft schematic](docs/wiring-diagram.svg) before assembling the circuit.
+
+## Power topology
+
+The 12 V source powers the relay board and the input of a buck converter. The buck converter supplies regulated 5 V to the tray servo. Relay K1 switches the 12 V heater circuit and relay K2 switches the 12 V fan circuit. GPIO 25 controls the buzzer through a base resistor and 2N2222 transistor; a zener protects the buzzer/transistor path from transients.
+
+Exact relay terminals, component ratings, buzzer supply, resistor value, and zener value/orientation must match the installed hardware. They are tracked in the wiring guide rather than guessed in the schematic.
 
 ## FreeRTOS design
 

@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1060" viewBox="0 0 1600 1060" role="img" aria-labelledby="title desc">
   <title id="title">Smart Egg Incubator wiring diagram</title>
-  <desc id="desc">Confirmed ESP32 signal connections and provisional power and relay load connections.</desc>
+  <desc id="desc">ESP32 signal connections, 12 volt relay and buck-converter power distribution, relay-switched heater and fan, and a 2N2222 buzzer driver.</desc>
   <defs>
     <style>
       .title { font: 700 34px Inter, Arial, sans-serif; fill: #102a43; }
@@ -16,6 +16,7 @@
       .load { fill: #fffaf0; stroke: #b45309; stroke-width: 2.5; rx: 12; }
       .note { fill: #fffbeb; stroke: #d97706; stroke-width: 2; rx: 10; }
       .confirmed { stroke: #2563eb; stroke-width: 3; fill: none; }
+      .provided { stroke: #d97706; stroke-width: 3; fill: none; }
       .ground { stroke: #475569; stroke-width: 3; fill: none; }
       .provisional { stroke: #d97706; stroke-width: 3; stroke-dasharray: 10 8; fill: none; }
       .dot { fill: #2563eb; }
@@ -30,7 +31,7 @@
 
   <rect width="1600" height="1060" fill="#f8fafc"/>
   <text x="70" y="62" class="title">Smart Egg Incubator - Wiring Diagram</text>
-  <text x="70" y="96" class="subtitle">Solid blue: confirmed by firmware | Dashed amber: verify against the actual hardware before wiring</text>
+  <text x="70" y="96" class="subtitle">Blue: firmware signals | Solid amber: confirmed power topology | Dashed amber: detail still to confirm</text>
 
   <!-- ESP32 controller -->
   <rect x="70" y="145" width="420" height="760" class="controller"/>
@@ -68,15 +69,16 @@
   <text x="760" y="493" text-anchor="middle" class="heading">Tray Servo</text>
   <text x="760" y="522" text-anchor="middle" class="label">SIGNAL | V+ | GND</text>
 
-  <rect x="610" y="565" width="300" height="95" class="module"/>
-  <text x="760" y="603" text-anchor="middle" class="heading">Buzzer</text>
-  <text x="760" y="632" text-anchor="middle" class="label">SIGNAL | GND</text>
+  <rect x="610" y="565" width="300" height="100" class="module"/>
+  <text x="760" y="592" text-anchor="middle" class="heading">Buzzer Driver</text>
+  <text x="760" y="618" text-anchor="middle" class="small">GPIO25 -> base resistor -> 2N2222</text>
+  <text x="760" y="642" text-anchor="middle" class="small">Buzzer +V / zener value: confirm</text>
 
   <rect x="610" y="680" width="300" height="150" class="relay"/>
   <text x="760" y="716" text-anchor="middle" class="heading">2-channel Relay Board</text>
   <text x="760" y="750" text-anchor="middle" class="label">IN1 (K1) - active LOW</text>
   <text x="760" y="782" text-anchor="middle" class="label">IN2 (K2) - active LOW</text>
-  <text x="760" y="814" text-anchor="middle" class="small">VCC / JD-VCC / GND: verify module</text>
+  <text x="760" y="814" text-anchor="middle" class="small">Powered from 12 V source</text>
 
   <!-- Confirmed signal wires -->
   <path d="M 475 276 H 610" class="confirmed" marker-end="url(#arrow-blue)"/>
@@ -91,53 +93,57 @@
   <text x="520" y="486" class="small">SIGNAL</text>
 
   <path d="M 475 586 H 610" class="confirmed" marker-end="url(#arrow-blue)"/>
-  <text x="520" y="576" class="small">SIGNAL</text>
+  <text x="500" y="576" class="small">via base resistor</text>
 
   <path d="M 475 702 H 610" class="confirmed" marker-end="url(#arrow-blue)"/>
   <path d="M 475 766 H 610" class="confirmed" marker-end="url(#arrow-blue)"/>
   <text x="522" y="692" class="small">IN1 / K1</text>
   <text x="522" y="756" class="small">IN2 / K2</text>
 
-  <!-- Power block -->
-  <rect x="1040" y="150" width="470" height="170" class="note"/>
-  <text x="1275" y="190" text-anchor="middle" class="heading">Low-voltage Power Distribution</text>
-  <text x="1070" y="226" class="label">- ESP32 input method and voltage</text>
-  <text x="1070" y="255" class="label">- Servo supply sized for stall current</text>
-  <text x="1070" y="284" class="label">- Relay logic/coil supply and common ground</text>
-  <text x="1275" y="308" text-anchor="middle" class="small">All require confirmation from the installed modules</text>
+  <!-- Confirmed power topology -->
+  <rect x="1040" y="150" width="210" height="130" class="note"/>
+  <text x="1145" y="190" text-anchor="middle" class="heading">12 V DC Source</text>
+  <text x="1145" y="222" text-anchor="middle" class="label">+12 V / 0 V</text>
+  <text x="1145" y="250" text-anchor="middle" class="small">Feeds relay board and buck</text>
 
-  <path d="M 1040 235 H 965 V 842 H 475" class="provisional" marker-end="url(#arrow-amber)"/>
-  <path d="M 965 282 H 910" class="provisional" marker-end="url(#arrow-amber)"/>
-  <path d="M 965 392 H 910" class="provisional" marker-end="url(#arrow-amber)"/>
-  <path d="M 965 502 H 910" class="provisional" marker-end="url(#arrow-amber)"/>
-  <path d="M 965 612 H 910" class="provisional" marker-end="url(#arrow-amber)"/>
-  <path d="M 965 755 H 910" class="provisional" marker-end="url(#arrow-amber)"/>
+  <rect x="1300" y="150" width="210" height="130" class="note"/>
+  <text x="1405" y="190" text-anchor="middle" class="heading">Buck Converter</text>
+  <text x="1405" y="222" text-anchor="middle" class="label">12 V in -> 5 V out</text>
+  <text x="1405" y="250" text-anchor="middle" class="small">5 V output powers servo</text>
+
+  <path d="M 1250 215 H 1300" class="provided" marker-end="url(#arrow-amber)"/>
+  <path d="M 1145 280 V 335 H 980 V 805 H 910" class="provided" marker-end="url(#arrow-amber)"/>
+  <text x="1000" y="325" class="small">12 V to relay power</text>
+  <path d="M 1405 280 V 330 H 955 V 502 H 910" class="provided" marker-end="url(#arrow-amber)"/>
+  <text x="1260" y="320" class="small">5 V to servo V+</text>
+  <path d="M 1040 240 H 1000 V 842 H 475" class="provisional" marker-end="url(#arrow-amber)"/>
+  <text x="805" y="870" class="small">Confirm common 0 V connection with ESP32 ground</text>
 
   <!-- Relay load side -->
   <rect x="1040" y="385" width="470" height="205" class="load"/>
-  <text x="1275" y="425" text-anchor="middle" class="heading">K1 - Heater Circuit (provisional)</text>
+  <text x="1275" y="425" text-anchor="middle" class="heading">K1 - 12 V Heater Circuit</text>
   <rect x="1070" y="455" width="115" height="62" class="box"/>
-  <text x="1127" y="481" text-anchor="middle" class="label">Rated</text>
-  <text x="1127" y="504" text-anchor="middle" class="label">DC supply</text>
+  <text x="1127" y="481" text-anchor="middle" class="label">12 V</text>
+  <text x="1127" y="504" text-anchor="middle" class="label">source</text>
   <rect x="1220" y="455" width="115" height="62" class="box"/>
   <text x="1277" y="481" text-anchor="middle" class="label">Fuse +</text>
   <text x="1277" y="504" text-anchor="middle" class="label">thermal cutoff</text>
   <rect x="1370" y="455" width="110" height="62" class="box"/>
   <text x="1425" y="493" text-anchor="middle" class="label">Heater</text>
-  <path d="M 1185 486 H 1220 M 1335 486 H 1370" class="provisional" marker-end="url(#arrow-amber)"/>
-  <text x="1275" y="548" text-anchor="middle" class="small">K1 COM/NO belongs in this series path.</text>
-  <text x="1275" y="570" text-anchor="middle" class="small">Exact terminal order depends on the selected relay and supply.</text>
+  <path d="M 1185 486 H 1220 M 1335 486 H 1370" class="provided" marker-end="url(#arrow-amber)"/>
+  <text x="1275" y="548" text-anchor="middle" class="small">K1 COM/NO switches the heater's 12 V path.</text>
+  <text x="1275" y="570" text-anchor="middle" class="small">Fuse and thermal-cutoff ratings still need confirmation.</text>
 
   <rect x="1040" y="625" width="470" height="150" class="load"/>
-  <text x="1275" y="665" text-anchor="middle" class="heading">K2 - Humidity / Fan Circuit (provisional)</text>
-  <text x="1275" y="705" text-anchor="middle" class="label">External supply -> K2 COM/NO -> installed load</text>
-  <text x="1275" y="738" text-anchor="middle" class="small">Load type, voltage, current, polarity, and protection must be confirmed</text>
+  <text x="1275" y="665" text-anchor="middle" class="heading">K2 - 12 V Fan Circuit</text>
+  <text x="1275" y="705" text-anchor="middle" class="label">12 V source -> K2 COM/NO -> fan -> 0 V</text>
+  <text x="1275" y="738" text-anchor="middle" class="small">Fan current and required protection still need confirmation</text>
 
-  <path d="M 910 730 H 975 V 487 H 1040" class="provisional" marker-end="url(#arrow-amber)"/>
-  <path d="M 910 785 H 995 V 700 H 1040" class="provisional" marker-end="url(#arrow-amber)"/>
+  <path d="M 910 730 H 975 V 487 H 1040" class="provided" marker-end="url(#arrow-amber)"/>
+  <path d="M 910 785 H 995 V 700 H 1040" class="provided" marker-end="url(#arrow-amber)"/>
 
   <!-- Footer warning -->
   <rect x="70" y="940" width="1440" height="75" class="note"/>
-  <text x="790" y="972" text-anchor="middle" class="heading">Draft - not construction-ready until the power and load details are confirmed</text>
-  <text x="790" y="999" text-anchor="middle" class="small">Never route heater current through the ESP32 or a breadboard. Use rated wiring, terminals, fuse, and an independent thermal cutoff.</text>
+  <text x="790" y="972" text-anchor="middle" class="heading">Power topology updated - component values and exact terminals still require confirmation</text>
+  <text x="790" y="999" text-anchor="middle" class="small">Buzzer protection shown as a conventional low-side 2N2222 driver; confirm its supply, resistor, and zener wiring/value.</text>
 </svg>

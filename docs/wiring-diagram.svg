@@ -53,7 +53,7 @@
   <circle cx="470" cy="702" r="5" class="dot"/>
   <text x="112" y="772" class="pin">GPIO 27</text>
   <circle cx="470" cy="766" r="5" class="dot"/>
-  <text x="112" y="848" class="pin">GND / VIN / 3V3</text>
+  <text x="112" y="848" class="pin">GND / 5V (VIN) / 3V3</text>
   <circle cx="470" cy="842" r="5" fill="#475569"/>
 
   <!-- Low-voltage modules -->
@@ -71,8 +71,8 @@
 
   <rect x="610" y="565" width="300" height="100" class="module"/>
   <text x="760" y="592" text-anchor="middle" class="heading">Buzzer Driver</text>
-  <text x="760" y="618" text-anchor="middle" class="small">GPIO25 -> base resistor -> 2N2222</text>
-  <text x="760" y="642" text-anchor="middle" class="small">Buzzer +V / zener value: confirm</text>
+  <text x="760" y="618" text-anchor="middle" class="small">GPIO25 -> 1 kOhm -> 2N2222</text>
+  <text x="760" y="642" text-anchor="middle" class="small">5 V from ESP32 | zener protection</text>
 
   <rect x="610" y="680" width="300" height="150" class="relay"/>
   <text x="760" y="716" text-anchor="middle" class="heading">2-channel Relay Board</text>
@@ -93,7 +93,9 @@
   <text x="520" y="486" class="small">SIGNAL</text>
 
   <path d="M 475 586 H 610" class="confirmed" marker-end="url(#arrow-blue)"/>
-  <text x="500" y="576" class="small">via base resistor</text>
+  <text x="500" y="576" class="small">via 1 kOhm</text>
+  <path d="M 475 842 H 545 V 650 H 610" class="provided" marker-end="url(#arrow-amber)"/>
+  <text x="488" y="820" class="small">5 V + GND</text>
 
   <path d="M 475 702 H 610" class="confirmed" marker-end="url(#arrow-blue)"/>
   <path d="M 475 766 H 610" class="confirmed" marker-end="url(#arrow-blue)"/>
@@ -144,6 +146,6 @@
 
   <!-- Footer warning -->
   <rect x="70" y="940" width="1440" height="75" class="note"/>
-  <text x="790" y="972" text-anchor="middle" class="heading">Power topology updated - component values and exact terminals still require confirmation</text>
-  <text x="790" y="999" text-anchor="middle" class="small">Buzzer protection shown as a conventional low-side 2N2222 driver; confirm its supply, resistor, and zener wiring/value.</text>
+  <text x="790" y="972" text-anchor="middle" class="heading">Power topology updated - exact relay terminals and load ratings still require confirmation</text>
+  <text x="790" y="999" text-anchor="middle" class="small">Buzzer: ESP32 5 V supply, GPIO25 through 1 kOhm to a 2N2222 driver, with zener protection.</text>
 </svg>

@@ -43,7 +43,7 @@ The complete project requirements are preserved in the [original project brief](
 | GPIO 18 | Servo signal | Egg-tray position; powered from the buck converter's 5 V output |
 | GPIO 21 | OLED SDA | I2C data |
 | GPIO 22 | OLED SCL | I2C clock |
-| GPIO 25 | 2N2222 base resistor | Low-side buzzer driver with zener protection |
+| GPIO 25 | 1 kΩ resistor -> 2N2222 | 5 V buzzer driver with zener protection |
 | GPIO 26 | Relay K1 input | Heater control, active-low |
 | GPIO 27 | Relay K2 input | Humidity/fan control, active-low |
 
@@ -51,9 +51,9 @@ See the [wiring guide](docs/WIRING.md) and [draft schematic](docs/wiring-diagram
 
 ## Power topology
 
-The 12 V source powers the relay board and the input of a buck converter. The buck converter supplies regulated 5 V to the tray servo. Relay K1 switches the 12 V heater circuit and relay K2 switches the 12 V fan circuit. GPIO 25 controls the buzzer through a base resistor and 2N2222 transistor; a zener protects the buzzer/transistor path from transients.
+The 12 V source powers the relay board and the input of a buck converter. The buck converter supplies regulated 5 V to the tray servo. Relay K1 switches the 12 V heater circuit and relay K2 switches the 12 V fan circuit. The buzzer receives 5 V from the ESP32 and is controlled from GPIO 25 through a 1 kΩ resistor and 2N2222 transistor, with zener protection.
 
-Exact relay terminals, component ratings, buzzer supply, resistor value, and zener value/orientation must match the installed hardware. They are tracked in the wiring guide rather than guessed in the schematic.
+Exact relay terminals and load ratings are tracked in the wiring guide.
 
 ## FreeRTOS design
 

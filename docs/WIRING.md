@@ -12,7 +12,7 @@ The controller-side signal connections are taken directly from the compiled firm
 | GPIO 18 | Servo signal | Servo receives 5 V from the buck converter |
 | GPIO 21 | OLED `SDA` | SSD1306 I2C display at address `0x3C` |
 | GPIO 22 | OLED `SCL` | SSD1306 I2C clock |
-| GPIO 25 | Base resistor -> 2N2222 base | Low-side buzzer driver; zener provides transient protection |
+| GPIO 25 | 1 kΩ resistor -> 2N2222 base | Low-side buzzer driver with zener protection |
 | GPIO 26 | Relay board `IN1` / K1 | Heater channel, active-low |
 | GPIO 27 | Relay board `IN2` / K2 | Fan channel, active-low |
 | GND | Peripheral signal grounds | Required for non-isolated control signals |
@@ -30,15 +30,7 @@ The heater circuit should retain a correctly rated fuse and independent thermal 
 
 ## Buzzer driver
 
-GPIO 25 does not drive the buzzer directly. It drives a 2N2222 NPN transistor through a base resistor:
-
-- GPIO 25 -> base resistor -> 2N2222 base;
-- 2N2222 emitter -> common ground;
-- 2N2222 collector -> buzzer negative terminal;
-- buzzer positive terminal -> its positive supply;
-- zener protection across the buzzer/collector path, according to the installed orientation.
-
-The diagram assumes the conventional protection orientation: zener cathode toward buzzer positive and anode toward the transistor collector. Confirm this against the actual build before treating that portion as final.
+The buzzer receives 5 V from the ESP32. GPIO 25 connects through a 1 kΩ resistor to the 2N2222 transistor, with zener protection on the buzzer circuit.
 
 ## Details still needed
 
@@ -47,8 +39,6 @@ The diagram assumes the conventional protection orientation: zener cathode towar
 - Heater wattage/current and fan current.
 - Buck-converter model/current rating and measured 5 V output.
 - Servo model and stall current.
-- Buzzer supply voltage/current.
-- Base-resistor resistance, zener part/value, and actual zener orientation.
 - Fuse and thermal-cutoff ratings.
 - Confirmation that the ESP32, buck output, servo, buzzer driver, and relay input side share the required common ground.
 

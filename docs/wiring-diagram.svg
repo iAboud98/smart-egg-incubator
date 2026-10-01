@@ -1,151 +1,259 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1060" viewBox="0 0 1600 1060" role="img" aria-labelledby="title desc">
-  <title id="title">Smart Egg Incubator wiring diagram</title>
-  <desc id="desc">ESP32 signal connections, 12 volt relay and buck-converter power distribution, relay-switched heater and fan, and a 2N2222 buzzer driver.</desc>
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1220" viewBox="0 0 1800 1220" role="img" aria-labelledby="title desc">
+  <title id="title">Smart Egg Incubator electronic schematic</title>
+  <desc id="desc">Complete ESP32 incubator schematic with DHT11, OLED, servo, two-channel relay module, heater, fan, buck converter, and 2N2222 buzzer driver.</desc>
+
   <defs>
+    <pattern id="grid" width="20" height="20" patternUnits="userSpaceOnUse">
+      <path d="M20 0H0V20" fill="none" stroke="#e8edf3" stroke-width="1"/>
+    </pattern>
     <style>
-      .title { font: 700 34px Inter, Arial, sans-serif; fill: #102a43; }
-      .subtitle { font: 18px Inter, Arial, sans-serif; fill: #486581; }
-      .heading { font: 700 20px Inter, Arial, sans-serif; fill: #102a43; }
-      .label { font: 16px Inter, Arial, sans-serif; fill: #243b53; }
-      .small { font: 14px Inter, Arial, sans-serif; fill: #486581; }
-      .pin { font: 700 15px ui-monospace, SFMono-Regular, Menlo, monospace; fill: #102a43; }
-      .box { fill: #ffffff; stroke: #829ab1; stroke-width: 2; rx: 12; }
-      .controller { fill: #eef6ff; stroke: #1d4ed8; stroke-width: 3; rx: 16; }
-      .module { fill: #f0fdf4; stroke: #15803d; stroke-width: 2.5; rx: 12; }
-      .relay { fill: #fff7ed; stroke: #c2410c; stroke-width: 2.5; rx: 12; }
-      .load { fill: #fffaf0; stroke: #b45309; stroke-width: 2.5; rx: 12; }
-      .note { fill: #fffbeb; stroke: #d97706; stroke-width: 2; rx: 10; }
-      .confirmed { stroke: #2563eb; stroke-width: 3; fill: none; }
-      .provided { stroke: #d97706; stroke-width: 3; fill: none; }
-      .ground { stroke: #475569; stroke-width: 3; fill: none; }
-      .provisional { stroke: #d97706; stroke-width: 3; stroke-dasharray: 10 8; fill: none; }
-      .dot { fill: #2563eb; }
+      .title { font: 700 34px Inter, Arial, sans-serif; fill: #132238; }
+      .subtitle { font: 16px Inter, Arial, sans-serif; fill: #52667a; }
+      .ref { font: 700 16px ui-monospace, SFMono-Regular, Menlo, monospace; fill: #101828; }
+      .name { font: 700 19px Inter, Arial, sans-serif; fill: #172b4d; }
+      .pin { font: 14px ui-monospace, SFMono-Regular, Menlo, monospace; fill: #334155; }
+      .net { font: 700 14px ui-monospace, SFMono-Regular, Menlo, monospace; fill: #a61b1b; }
+      .note { font: 14px Inter, Arial, sans-serif; fill: #52667a; }
+      .device { fill: #ffffff; stroke: #334155; stroke-width: 2.5; }
+      .controller { fill: #eef6ff; stroke: #175cd3; stroke-width: 3; }
+      .power-device { fill: #fff8eb; stroke: #b54708; stroke-width: 2.5; }
+      .wire { fill: none; stroke: #16794b; stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; }
+      .signal { fill: none; stroke: #175cd3; stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; }
+      .power { fill: none; stroke: #c62828; stroke-width: 3.5; stroke-linejoin: round; stroke-linecap: round; }
+      .ground-wire { fill: none; stroke: #263238; stroke-width: 3; }
+      .link { fill: none; stroke: #7b8794; stroke-width: 2; stroke-dasharray: 7 6; }
+      .junction { fill: #c62828; }
+      .signal-junction { fill: #175cd3; }
     </style>
-    <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb"/>
-    </marker>
-    <marker id="arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
-      <path d="M 0 0 L 10 5 L 0 10 z" fill="#d97706"/>
-    </marker>
+    <g id="ground">
+      <path d="M0 0V10 M-14 10H14 M-9 16H9 M-4 22H4" class="ground-wire"/>
+    </g>
+    <g id="power-arrow">
+      <path d="M0 18V0 M-8 8L0 0L8 8" class="power"/>
+    </g>
   </defs>
 
-  <rect width="1600" height="1060" fill="#f8fafc"/>
-  <text x="70" y="62" class="title">Smart Egg Incubator - Wiring Diagram</text>
-  <text x="70" y="96" class="subtitle">Blue: firmware signals | Solid amber: confirmed power topology | Dashed amber: detail still to confirm</text>
+  <rect width="1800" height="1220" fill="#fbfcfe"/>
+  <rect x="30" y="110" width="1740" height="1060" fill="url(#grid)" stroke="#d0d9e4" stroke-width="2"/>
+  <text x="55" y="55" class="title">Smart Egg Incubator - Electronic Schematic</text>
+  <text x="55" y="84" class="subtitle">ESP32 DevKit V1 | 12 V heater and fan | 5 V servo | FreeRTOS + Blynk</text>
 
-  <!-- ESP32 controller -->
-  <rect x="70" y="145" width="420" height="760" class="controller"/>
-  <text x="280" y="190" text-anchor="middle" class="heading">ESP32 DevKit</text>
-  <text x="280" y="216" text-anchor="middle" class="small">Exact board revision to be confirmed</text>
-  <line x1="100" y1="238" x2="460" y2="238" stroke="#b8cde3" stroke-width="2"/>
+  <!-- USB power -->
+  <rect x="70" y="190" width="190" height="85" rx="8" class="device"/>
+  <text x="90" y="220" class="ref">J2</text>
+  <text x="165" y="222" text-anchor="middle" class="name">USB 5 V</text>
+  <text x="165" y="250" text-anchor="middle" class="pin">ESP32 POWER</text>
+  <path d="M260 232H350" class="power"/>
+  <text x="275" y="221" class="net">USB_5V</text>
 
-  <text x="112" y="282" class="pin">GPIO 4</text>
-  <circle cx="470" cy="276" r="5" class="dot"/>
-  <text x="112" y="372" class="pin">GPIO 21 (SDA)</text>
-  <circle cx="470" cy="366" r="5" class="dot"/>
-  <text x="112" y="412" class="pin">GPIO 22 (SCL)</text>
-  <circle cx="470" cy="406" r="5" class="dot"/>
-  <text x="112" y="502" class="pin">GPIO 18 (PWM)</text>
-  <circle cx="470" cy="496" r="5" class="dot"/>
-  <text x="112" y="592" class="pin">GPIO 25</text>
-  <circle cx="470" cy="586" r="5" class="dot"/>
-  <text x="112" y="708" class="pin">GPIO 26</text>
-  <circle cx="470" cy="702" r="5" class="dot"/>
-  <text x="112" y="772" class="pin">GPIO 27</text>
-  <circle cx="470" cy="766" r="5" class="dot"/>
-  <text x="112" y="848" class="pin">GND / 5V (VIN) / 3V3</text>
-  <circle cx="470" cy="842" r="5" fill="#475569"/>
+  <!-- ESP32 -->
+  <rect x="350" y="145" width="390" height="650" rx="12" class="controller"/>
+  <text x="375" y="178" class="ref">U1</text>
+  <text x="545" y="182" text-anchor="middle" class="name">ESP32 DevKit V1</text>
+  <line x1="375" y1="198" x2="715" y2="198" stroke="#9fc4f3" stroke-width="2"/>
 
-  <!-- Low-voltage modules -->
-  <rect x="610" y="235" width="300" height="95" class="module"/>
-  <text x="760" y="273" text-anchor="middle" class="heading">DHT11</text>
-  <text x="760" y="302" text-anchor="middle" class="label">DATA | VCC | GND</text>
+  <text x="375" y="238" class="pin">5V / VIN</text>
+  <circle cx="730" cy="232" r="5" class="signal-junction"/>
+  <text x="375" y="283" class="pin">3V3</text>
+  <circle cx="730" cy="277" r="5" class="signal-junction"/>
+  <text x="375" y="328" class="pin">GND</text>
+  <circle cx="730" cy="322" r="5" fill="#263238"/>
+  <text x="375" y="373" class="pin">GPIO4   DHT_DATA</text>
+  <circle cx="730" cy="367" r="5" class="signal-junction"/>
+  <text x="375" y="423" class="pin">GPIO21  I2C_SDA</text>
+  <circle cx="730" cy="417" r="5" class="signal-junction"/>
+  <text x="375" y="468" class="pin">GPIO22  I2C_SCL</text>
+  <circle cx="730" cy="462" r="5" class="signal-junction"/>
+  <text x="375" y="523" class="pin">GPIO18  SERVO_PWM</text>
+  <circle cx="730" cy="517" r="5" class="signal-junction"/>
+  <text x="375" y="583" class="pin">GPIO25  BUZZER</text>
+  <circle cx="730" cy="577" r="5" class="signal-junction"/>
+  <text x="375" y="658" class="pin">GPIO26  RELAY_IN1</text>
+  <circle cx="730" cy="652" r="5" class="signal-junction"/>
+  <text x="375" y="718" class="pin">GPIO27  RELAY_IN2</text>
+  <circle cx="730" cy="712" r="5" class="signal-junction"/>
 
-  <rect x="610" y="345" width="300" height="95" class="module"/>
-  <text x="760" y="383" text-anchor="middle" class="heading">SSD1306 OLED</text>
-  <text x="760" y="412" text-anchor="middle" class="label">SDA | SCL | VCC | GND</text>
+  <path d="M730 232H790" class="power"/>
+  <text x="752" y="220" class="net">+5V_ESP</text>
+  <path d="M730 277H790" class="power"/>
+  <text x="752" y="265" class="net">+3V3</text>
+  <path d="M730 322V342" class="ground-wire"/>
+  <use href="#ground" x="730" y="342"/>
 
-  <rect x="610" y="455" width="300" height="95" class="module"/>
-  <text x="760" y="493" text-anchor="middle" class="heading">Tray Servo</text>
-  <text x="760" y="522" text-anchor="middle" class="label">SIGNAL | V+ | GND</text>
+  <!-- DHT11 -->
+  <rect x="875" y="145" width="270" height="145" rx="8" class="device"/>
+  <text x="895" y="176" class="ref">TH1</text>
+  <text x="1010" y="180" text-anchor="middle" class="name">DHT11 MODULE</text>
+  <text x="895" y="215" class="pin">1  VCC</text>
+  <text x="895" y="245" class="pin">2  DATA</text>
+  <text x="895" y="275" class="pin">3  GND</text>
+  <path d="M875 210H835V190" class="power"/>
+  <use href="#power-arrow" x="835" y="190"/>
+  <text x="795" y="177" class="net">+3V3</text>
+  <path d="M730 367H810V240H875" class="signal"/>
+  <text x="755" y="354" class="pin">DHT_DATA</text>
+  <path d="M875 270H845V292" class="ground-wire"/>
+  <use href="#ground" x="845" y="292"/>
 
-  <rect x="610" y="565" width="300" height="100" class="module"/>
-  <text x="760" y="592" text-anchor="middle" class="heading">Buzzer Driver</text>
-  <text x="760" y="618" text-anchor="middle" class="small">GPIO25 -> 1 kOhm -> 2N2222</text>
-  <text x="760" y="642" text-anchor="middle" class="small">5 V from ESP32 | zener protection</text>
+  <!-- OLED -->
+  <rect x="875" y="325" width="270" height="165" rx="8" class="device"/>
+  <text x="895" y="356" class="ref">DS1</text>
+  <text x="1010" y="360" text-anchor="middle" class="name">SSD1306 OLED</text>
+  <text x="895" y="395" class="pin">1  VCC</text>
+  <text x="895" y="425" class="pin">2  GND</text>
+  <text x="895" y="455" class="pin">3  SCL</text>
+  <text x="895" y="482" class="pin">4  SDA</text>
+  <path d="M875 390H835V370" class="power"/>
+  <use href="#power-arrow" x="835" y="370"/>
+  <text x="795" y="357" class="net">+3V3</text>
+  <path d="M875 420H850V442" class="ground-wire"/>
+  <use href="#ground" x="850" y="442"/>
+  <path d="M730 462H790V450H875" class="signal"/>
+  <path d="M730 417H770V477H875" class="signal"/>
+  <text x="748" y="406" class="pin">SDA</text>
+  <text x="797" y="441" class="pin">SCL</text>
 
-  <rect x="610" y="680" width="300" height="150" class="relay"/>
-  <text x="760" y="716" text-anchor="middle" class="heading">2-channel Relay Board</text>
-  <text x="760" y="750" text-anchor="middle" class="label">IN1 (K1) - active LOW</text>
-  <text x="760" y="782" text-anchor="middle" class="label">IN2 (K2) - active LOW</text>
-  <text x="760" y="814" text-anchor="middle" class="small">Powered from 12 V source</text>
+  <!-- Servo -->
+  <rect x="875" y="510" width="270" height="145" rx="8" class="device"/>
+  <text x="895" y="541" class="ref">M1</text>
+  <text x="1010" y="545" text-anchor="middle" class="name">5 V TRAY SERVO</text>
+  <text x="895" y="580" class="pin">SIG</text>
+  <text x="895" y="610" class="pin">+5V</text>
+  <text x="895" y="640" class="pin">GND</text>
+  <path d="M730 517H815V575H875" class="signal"/>
+  <text x="755" y="505" class="pin">SERVO_PWM</text>
+  <path d="M875 605H835V585" class="power"/>
+  <use href="#power-arrow" x="835" y="585"/>
+  <text x="765" y="572" class="net">+5V_SERVO</text>
+  <path d="M875 635H850V657" class="ground-wire"/>
+  <use href="#ground" x="850" y="657"/>
 
-  <!-- Confirmed signal wires -->
-  <path d="M 475 276 H 610" class="confirmed" marker-end="url(#arrow-blue)"/>
-  <text x="530" y="266" class="small">DATA</text>
+  <!-- Buzzer transistor circuit -->
+  <text x="1260" y="180" class="ref">BZ1 / Q1</text>
+  <text x="1470" y="180" text-anchor="middle" class="name">5 V BUZZER DRIVER</text>
+  <path d="M730 577H770V675H1180" class="signal"/>
+  <path d="M1180 675l12 -10 16 20 16 -20 16 20 16 -20 12 10" class="signal"/>
+  <path d="M1268 675H1285V615H1298" class="signal"/>
+  <text x="1188" y="650" class="ref">R1  1 kOhm</text>
 
-  <path d="M 475 366 H 580 V 380 H 610" class="confirmed" marker-end="url(#arrow-blue)"/>
-  <path d="M 475 406 H 570 V 416 H 610" class="confirmed" marker-end="url(#arrow-blue)"/>
-  <text x="515" y="355" class="small">SDA</text>
-  <text x="515" y="430" class="small">SCL</text>
+  <circle cx="1340" cy="615" r="42" fill="#fff" stroke="#334155" stroke-width="2.5"/>
+  <path d="M1298 615H1315 M1315 590V640 M1315 597L1360 565 M1315 633L1360 665" class="ground-wire"/>
+  <path d="M1348 656l12 9 -2 -15" fill="#263238"/>
+  <text x="1387" y="622" class="ref">Q1</text>
+  <text x="1387" y="644" class="pin">2N2222</text>
+  <path d="M1360 665V690" class="ground-wire"/>
+  <use href="#ground" x="1360" y="690"/>
 
-  <path d="M 475 496 H 610" class="confirmed" marker-end="url(#arrow-blue)"/>
-  <text x="520" y="486" class="small">SIGNAL</text>
+  <circle cx="1500" cy="435" r="34" fill="#fff" stroke="#334155" stroke-width="2.5"/>
+  <path d="M1500 401V365" class="power"/>
+  <use href="#power-arrow" x="1500" y="345"/>
+  <text x="1455" y="326" class="net">+5V_ESP</text>
+  <path d="M1485 423q15 -18 30 0q-15 18 -30 0 M1500 469V565H1360" class="ground-wire"/>
+  <text x="1543" y="430" class="ref">BZ1</text>
+  <text x="1543" y="452" class="pin">5 V</text>
 
-  <path d="M 475 586 H 610" class="confirmed" marker-end="url(#arrow-blue)"/>
-  <text x="500" y="576" class="small">via 1 kOhm</text>
-  <path d="M 475 842 H 545 V 650 H 610" class="provided" marker-end="url(#arrow-amber)"/>
-  <text x="488" y="820" class="small">5 V + GND</text>
+  <!-- Zener in parallel with buzzer -->
+  <path d="M1610 365V405" class="power"/>
+  <path d="M1595 405H1625 M1595 410L1625 400" class="ground-wire"/>
+  <path d="M1595 445L1625 425L1595 405Z" fill="#ffffff" stroke="#263238" stroke-width="2.5"/>
+  <path d="M1610 445V565H1500" class="ground-wire"/>
+  <path d="M1500 365H1610" class="power"/>
+  <text x="1640" y="416" class="ref">D1</text>
+  <text x="1640" y="438" class="pin">ZENER</text>
 
-  <path d="M 475 702 H 610" class="confirmed" marker-end="url(#arrow-blue)"/>
-  <path d="M 475 766 H 610" class="confirmed" marker-end="url(#arrow-blue)"/>
-  <text x="522" y="692" class="small">IN1 / K1</text>
-  <text x="522" y="756" class="small">IN2 / K2</text>
+  <!-- Relay module -->
+  <rect x="875" y="730" width="300" height="205" rx="8" class="power-device"/>
+  <text x="895" y="756" class="ref">U3</text>
+  <text x="1025" y="782" text-anchor="middle" class="name">2-CH 12 V RELAY MODULE</text>
+  <text x="895" y="820" class="pin">IN1  K1 HEATER</text>
+  <text x="895" y="855" class="pin">IN2  K2 FAN</text>
+  <text x="895" y="890" class="pin">VCC  +12V</text>
+  <text x="895" y="920" class="pin">GND</text>
+  <path d="M730 652H805V815H875" class="signal"/>
+  <path d="M730 712H785V850H875" class="signal"/>
+  <text x="748" y="642" class="pin">IN1</text>
+  <text x="748" y="701" class="pin">IN2</text>
+  <path d="M1175 785H1215" class="link"/>
+  <path d="M1175 835H1215" class="link"/>
+  <path d="M875 885H835V865" class="power"/>
+  <use href="#power-arrow" x="835" y="840"/>
+  <text x="787" y="820" class="net">+12V</text>
+  <path d="M875 915H845V937" class="ground-wire"/>
+  <use href="#ground" x="845" y="937"/>
 
-  <!-- Confirmed power topology -->
-  <rect x="1040" y="150" width="210" height="130" class="note"/>
-  <text x="1145" y="190" text-anchor="middle" class="heading">12 V DC Source</text>
-  <text x="1145" y="222" text-anchor="middle" class="label">+12 V / 0 V</text>
-  <text x="1145" y="250" text-anchor="middle" class="small">Feeds relay board and buck</text>
+  <!-- K1 heater relay contact -->
+  <text x="1270" y="735" class="ref">K1 HEATER RELAY</text>
+  <path d="M1240 790V770" class="power"/>
+  <use href="#power-arrow" x="1240" y="750"/>
+  <text x="1170" y="750" class="net">+12V</text>
+  <circle cx="1240" cy="790" r="5" fill="#263238"/>
+  <circle cx="1335" cy="770" r="5" fill="#263238"/>
+  <path d="M1240 790L1320 773" class="ground-wire"/>
+  <path d="M1335 770H1385" class="power"/>
+  <rect x="1385" y="748" width="115" height="44" rx="5" class="device"/>
+  <text x="1442" y="776" text-anchor="middle" class="ref">TF1 CUTOFF</text>
+  <path d="M1500 770H1530" class="power"/>
+  <rect x="1530" y="730" width="190" height="80" rx="8" class="power-device"/>
+  <text x="1548" y="752" class="ref">H1</text>
+  <text x="1635" y="785" text-anchor="middle" class="name">12 V HEATER</text>
+  <path d="M1625 810V835" class="ground-wire"/>
+  <use href="#ground" x="1625" y="835"/>
+  <text x="1270" y="812" class="pin">COM</text>
+  <text x="1330" y="752" class="pin">NO</text>
+  <text x="1220" y="835" class="pin">NC unused</text>
 
-  <rect x="1300" y="150" width="210" height="130" class="note"/>
-  <text x="1405" y="190" text-anchor="middle" class="heading">Buck Converter</text>
-  <text x="1405" y="222" text-anchor="middle" class="label">12 V in -> 5 V out</text>
-  <text x="1405" y="250" text-anchor="middle" class="small">5 V output powers servo</text>
+  <!-- K2 fan relay contact -->
+  <text x="1210" y="868" class="ref">K2 FAN RELAY</text>
+  <path d="M1240 930V910" class="power"/>
+  <use href="#power-arrow" x="1240" y="890"/>
+  <text x="1180" y="842" class="net">+12V</text>
+  <circle cx="1240" cy="930" r="5" fill="#263238"/>
+  <circle cx="1335" cy="910" r="5" fill="#263238"/>
+  <path d="M1240 930L1320 913" class="ground-wire"/>
+  <path d="M1335 910H1570" class="power"/>
+  <circle cx="1625" cy="910" r="55" fill="#fff" stroke="#334155" stroke-width="2.5"/>
+  <path d="M1625 965V985" class="ground-wire"/>
+  <use href="#ground" x="1625" y="985"/>
+  <path d="M1625 910m-35 0h70 M1625 875v70 M1597 882l56 56 M1653 882l-56 56" stroke="#334155" stroke-width="2"/>
+  <text x="1690" y="902" class="ref">M2</text>
+  <text x="1690" y="924" class="pin">12 V FAN</text>
+  <text x="1270" y="952" class="pin">COM</text>
+  <text x="1330" y="892" class="pin">NO</text>
+  <text x="1220" y="975" class="pin">NC unused</text>
 
-  <path d="M 1250 215 H 1300" class="provided" marker-end="url(#arrow-amber)"/>
-  <path d="M 1145 280 V 335 H 980 V 805 H 910" class="provided" marker-end="url(#arrow-amber)"/>
-  <text x="1000" y="325" class="small">12 V to relay power</text>
-  <path d="M 1405 280 V 330 H 955 V 502 H 910" class="provided" marker-end="url(#arrow-amber)"/>
-  <text x="1260" y="320" class="small">5 V to servo V+</text>
-  <path d="M 1040 240 H 1000 V 842 H 475" class="provisional" marker-end="url(#arrow-amber)"/>
-  <text x="805" y="870" class="small">Confirm common 0 V connection with ESP32 ground</text>
+  <!-- 12 V source -->
+  <rect x="70" y="920" width="190" height="125" rx="8" class="power-device"/>
+  <text x="90" y="946" class="ref">J1</text>
+  <text x="165" y="975" text-anchor="middle" class="name">12 V DC INPUT</text>
+  <text x="90" y="1010" class="pin">1  +12V</text>
+  <text x="90" y="1038" class="pin">2  GND</text>
+  <path d="M260 990H300" class="power"/>
+  <circle cx="280" cy="990" r="5" class="junction"/>
+  <path d="M280 990V900" class="power"/>
+  <use href="#power-arrow" x="280" y="880"/>
+  <text x="230" y="862" class="net">+12V</text>
+  <path d="M260 1020H280V1040" class="ground-wire"/>
+  <use href="#ground" x="280" y="1040"/>
 
-  <!-- Relay load side -->
-  <rect x="1040" y="385" width="470" height="205" class="load"/>
-  <text x="1275" y="425" text-anchor="middle" class="heading">K1 - 12 V Heater Circuit</text>
-  <rect x="1070" y="455" width="115" height="62" class="box"/>
-  <text x="1127" y="481" text-anchor="middle" class="label">12 V</text>
-  <text x="1127" y="504" text-anchor="middle" class="label">source</text>
-  <rect x="1220" y="455" width="115" height="62" class="box"/>
-  <text x="1277" y="481" text-anchor="middle" class="label">Fuse +</text>
-  <text x="1277" y="504" text-anchor="middle" class="label">thermal cutoff</text>
-  <rect x="1370" y="455" width="110" height="62" class="box"/>
-  <text x="1425" y="493" text-anchor="middle" class="label">Heater</text>
-  <path d="M 1185 486 H 1220 M 1335 486 H 1370" class="provided" marker-end="url(#arrow-amber)"/>
-  <text x="1275" y="548" text-anchor="middle" class="small">K1 COM/NO switches the heater's 12 V path.</text>
-  <text x="1275" y="570" text-anchor="middle" class="small">Fuse and thermal-cutoff ratings still need confirmation.</text>
+  <!-- Buck converter -->
+  <rect x="330" y="900" width="330" height="160" rx="8" class="power-device"/>
+  <text x="350" y="932" class="ref">U2</text>
+  <text x="495" y="935" text-anchor="middle" class="name">12 V -> 5 V BUCK</text>
+  <text x="350" y="975" class="pin">IN+  +12V</text>
+  <text x="350" y="1015" class="pin">IN-  GND</text>
+  <text x="540" y="975" class="pin">OUT+  +5V_SERVO</text>
+  <text x="540" y="1015" class="pin">OUT-  GND</text>
+  <path d="M300 990H330" class="power"/>
+  <path d="M330 1010H310V1032" class="ground-wire"/>
+  <use href="#ground" x="310" y="1032"/>
+  <path d="M660 970H710V940" class="power"/>
+  <use href="#power-arrow" x="710" y="920"/>
+  <text x="675" y="900" class="net">+5V_SERVO</text>
+  <path d="M660 1010H690V1032" class="ground-wire"/>
+  <use href="#ground" x="690" y="1032"/>
 
-  <rect x="1040" y="625" width="470" height="150" class="load"/>
-  <text x="1275" y="665" text-anchor="middle" class="heading">K2 - 12 V Fan Circuit</text>
-  <text x="1275" y="705" text-anchor="middle" class="label">12 V source -> K2 COM/NO -> fan -> 0 V</text>
-  <text x="1275" y="738" text-anchor="middle" class="small">Fan current and required protection still need confirmation</text>
-
-  <path d="M 910 730 H 975 V 487 H 1040" class="provided" marker-end="url(#arrow-amber)"/>
-  <path d="M 910 785 H 995 V 700 H 1040" class="provided" marker-end="url(#arrow-amber)"/>
-
-  <!-- Footer warning -->
-  <rect x="70" y="940" width="1440" height="75" class="note"/>
-  <text x="790" y="972" text-anchor="middle" class="heading">Power topology updated - exact relay terminals and load ratings still require confirmation</text>
-  <text x="790" y="999" text-anchor="middle" class="small">Buzzer: ESP32 5 V supply, GPIO25 through 1 kOhm to a 2N2222 driver, with zener protection.</text>
+  <!-- Notes -->
+  <rect x="70" y="1090" width="1650" height="55" rx="8" fill="#f1f5f9" stroke="#94a3b8" stroke-width="1.5"/>
+  <text x="895" y="1115" text-anchor="middle" class="note">All GND symbols share one common ground: 12 V negative, ESP32 GND, buck GND, relay GND, servo GND, sensor GND, OLED GND, and Q1 emitter.</text>
+  <text x="895" y="1137" text-anchor="middle" class="note">K1 and K2 use normally-open contacts so the heater and fan default to OFF. Relay inputs are active LOW.</text>
 </svg>

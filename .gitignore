@@ -1,0 +1,9 @@
+.DS_Store
+.arduino/
+.pio/
+.vscode/
+build/
+tmp/
+
+# Local credentials
+SmartIncubator/Secrets.h

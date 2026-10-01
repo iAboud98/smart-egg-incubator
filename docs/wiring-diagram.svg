@@ -1,0 +1,143 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="1060" viewBox="0 0 1600 1060" role="img" aria-labelledby="title desc">
+  <title id="title">Smart Egg Incubator wiring diagram</title>
+  <desc id="desc">Confirmed ESP32 signal connections and provisional power and relay load connections.</desc>
+  <defs>
+    <style>
+      .title { font: 700 34px Inter, Arial, sans-serif; fill: #102a43; }
+      .subtitle { font: 18px Inter, Arial, sans-serif; fill: #486581; }
+      .heading { font: 700 20px Inter, Arial, sans-serif; fill: #102a43; }
+      .label { font: 16px Inter, Arial, sans-serif; fill: #243b53; }
+      .small { font: 14px Inter, Arial, sans-serif; fill: #486581; }
+      .pin { font: 700 15px ui-monospace, SFMono-Regular, Menlo, monospace; fill: #102a43; }
+      .box { fill: #ffffff; stroke: #829ab1; stroke-width: 2; rx: 12; }
+      .controller { fill: #eef6ff; stroke: #1d4ed8; stroke-width: 3; rx: 16; }
+      .module { fill: #f0fdf4; stroke: #15803d; stroke-width: 2.5; rx: 12; }
+      .relay { fill: #fff7ed; stroke: #c2410c; stroke-width: 2.5; rx: 12; }
+      .load { fill: #fffaf0; stroke: #b45309; stroke-width: 2.5; rx: 12; }
+      .note { fill: #fffbeb; stroke: #d97706; stroke-width: 2; rx: 10; }
+      .confirmed { stroke: #2563eb; stroke-width: 3; fill: none; }
+      .ground { stroke: #475569; stroke-width: 3; fill: none; }
+      .provisional { stroke: #d97706; stroke-width: 3; stroke-dasharray: 10 8; fill: none; }
+      .dot { fill: #2563eb; }
+    </style>
+    <marker id="arrow-blue" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#2563eb"/>
+    </marker>
+    <marker id="arrow-amber" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#d97706"/>
+    </marker>
+  </defs>
+
+  <rect width="1600" height="1060" fill="#f8fafc"/>
+  <text x="70" y="62" class="title">Smart Egg Incubator - Wiring Diagram</text>
+  <text x="70" y="96" class="subtitle">Solid blue: confirmed by firmware | Dashed amber: verify against the actual hardware before wiring</text>
+
+  <!-- ESP32 controller -->
+  <rect x="70" y="145" width="420" height="760" class="controller"/>
+  <text x="280" y="190" text-anchor="middle" class="heading">ESP32 DevKit</text>
+  <text x="280" y="216" text-anchor="middle" class="small">Exact board revision to be confirmed</text>
+  <line x1="100" y1="238" x2="460" y2="238" stroke="#b8cde3" stroke-width="2"/>
+
+  <text x="112" y="282" class="pin">GPIO 4</text>
+  <circle cx="470" cy="276" r="5" class="dot"/>
+  <text x="112" y="372" class="pin">GPIO 21 (SDA)</text>
+  <circle cx="470" cy="366" r="5" class="dot"/>
+  <text x="112" y="412" class="pin">GPIO 22 (SCL)</text>
+  <circle cx="470" cy="406" r="5" class="dot"/>
+  <text x="112" y="502" class="pin">GPIO 18 (PWM)</text>
+  <circle cx="470" cy="496" r="5" class="dot"/>
+  <text x="112" y="592" class="pin">GPIO 25</text>
+  <circle cx="470" cy="586" r="5" class="dot"/>
+  <text x="112" y="708" class="pin">GPIO 26</text>
+  <circle cx="470" cy="702" r="5" class="dot"/>
+  <text x="112" y="772" class="pin">GPIO 27</text>
+  <circle cx="470" cy="766" r="5" class="dot"/>
+  <text x="112" y="848" class="pin">GND / VIN / 3V3</text>
+  <circle cx="470" cy="842" r="5" fill="#475569"/>
+
+  <!-- Low-voltage modules -->
+  <rect x="610" y="235" width="300" height="95" class="module"/>
+  <text x="760" y="273" text-anchor="middle" class="heading">DHT11</text>
+  <text x="760" y="302" text-anchor="middle" class="label">DATA | VCC | GND</text>
+
+  <rect x="610" y="345" width="300" height="95" class="module"/>
+  <text x="760" y="383" text-anchor="middle" class="heading">SSD1306 OLED</text>
+  <text x="760" y="412" text-anchor="middle" class="label">SDA | SCL | VCC | GND</text>
+
+  <rect x="610" y="455" width="300" height="95" class="module"/>
+  <text x="760" y="493" text-anchor="middle" class="heading">Tray Servo</text>
+  <text x="760" y="522" text-anchor="middle" class="label">SIGNAL | V+ | GND</text>
+
+  <rect x="610" y="565" width="300" height="95" class="module"/>
+  <text x="760" y="603" text-anchor="middle" class="heading">Buzzer</text>
+  <text x="760" y="632" text-anchor="middle" class="label">SIGNAL | GND</text>
+
+  <rect x="610" y="680" width="300" height="150" class="relay"/>
+  <text x="760" y="716" text-anchor="middle" class="heading">2-channel Relay Board</text>
+  <text x="760" y="750" text-anchor="middle" class="label">IN1 (K1) - active LOW</text>
+  <text x="760" y="782" text-anchor="middle" class="label">IN2 (K2) - active LOW</text>
+  <text x="760" y="814" text-anchor="middle" class="small">VCC / JD-VCC / GND: verify module</text>
+
+  <!-- Confirmed signal wires -->
+  <path d="M 475 276 H 610" class="confirmed" marker-end="url(#arrow-blue)"/>
+  <text x="530" y="266" class="small">DATA</text>
+
+  <path d="M 475 366 H 580 V 380 H 610" class="confirmed" marker-end="url(#arrow-blue)"/>
+  <path d="M 475 406 H 570 V 416 H 610" class="confirmed" marker-end="url(#arrow-blue)"/>
+  <text x="515" y="355" class="small">SDA</text>
+  <text x="515" y="430" class="small">SCL</text>
+
+  <path d="M 475 496 H 610" class="confirmed" marker-end="url(#arrow-blue)"/>
+  <text x="520" y="486" class="small">SIGNAL</text>
+
+  <path d="M 475 586 H 610" class="confirmed" marker-end="url(#arrow-blue)"/>
+  <text x="520" y="576" class="small">SIGNAL</text>
+
+  <path d="M 475 702 H 610" class="confirmed" marker-end="url(#arrow-blue)"/>
+  <path d="M 475 766 H 610" class="confirmed" marker-end="url(#arrow-blue)"/>
+  <text x="522" y="692" class="small">IN1 / K1</text>
+  <text x="522" y="756" class="small">IN2 / K2</text>
+
+  <!-- Power block -->
+  <rect x="1040" y="150" width="470" height="170" class="note"/>
+  <text x="1275" y="190" text-anchor="middle" class="heading">Low-voltage Power Distribution</text>
+  <text x="1070" y="226" class="label">- ESP32 input method and voltage</text>
+  <text x="1070" y="255" class="label">- Servo supply sized for stall current</text>
+  <text x="1070" y="284" class="label">- Relay logic/coil supply and common ground</text>
+  <text x="1275" y="308" text-anchor="middle" class="small">All require confirmation from the installed modules</text>
+
+  <path d="M 1040 235 H 965 V 842 H 475" class="provisional" marker-end="url(#arrow-amber)"/>
+  <path d="M 965 282 H 910" class="provisional" marker-end="url(#arrow-amber)"/>
+  <path d="M 965 392 H 910" class="provisional" marker-end="url(#arrow-amber)"/>
+  <path d="M 965 502 H 910" class="provisional" marker-end="url(#arrow-amber)"/>
+  <path d="M 965 612 H 910" class="provisional" marker-end="url(#arrow-amber)"/>
+  <path d="M 965 755 H 910" class="provisional" marker-end="url(#arrow-amber)"/>
+
+  <!-- Relay load side -->
+  <rect x="1040" y="385" width="470" height="205" class="load"/>
+  <text x="1275" y="425" text-anchor="middle" class="heading">K1 - Heater Circuit (provisional)</text>
+  <rect x="1070" y="455" width="115" height="62" class="box"/>
+  <text x="1127" y="481" text-anchor="middle" class="label">Rated</text>
+  <text x="1127" y="504" text-anchor="middle" class="label">DC supply</text>
+  <rect x="1220" y="455" width="115" height="62" class="box"/>
+  <text x="1277" y="481" text-anchor="middle" class="label">Fuse +</text>
+  <text x="1277" y="504" text-anchor="middle" class="label">thermal cutoff</text>
+  <rect x="1370" y="455" width="110" height="62" class="box"/>
+  <text x="1425" y="493" text-anchor="middle" class="label">Heater</text>
+  <path d="M 1185 486 H 1220 M 1335 486 H 1370" class="provisional" marker-end="url(#arrow-amber)"/>
+  <text x="1275" y="548" text-anchor="middle" class="small">K1 COM/NO belongs in this series path.</text>
+  <text x="1275" y="570" text-anchor="middle" class="small">Exact terminal order depends on the selected relay and supply.</text>
+
+  <rect x="1040" y="625" width="470" height="150" class="load"/>
+  <text x="1275" y="665" text-anchor="middle" class="heading">K2 - Humidity / Fan Circuit (provisional)</text>
+  <text x="1275" y="705" text-anchor="middle" class="label">External supply -> K2 COM/NO -> installed load</text>
+  <text x="1275" y="738" text-anchor="middle" class="small">Load type, voltage, current, polarity, and protection must be confirmed</text>
+
+  <path d="M 910 730 H 975 V 487 H 1040" class="provisional" marker-end="url(#arrow-amber)"/>
+  <path d="M 910 785 H 995 V 700 H 1040" class="provisional" marker-end="url(#arrow-amber)"/>
+
+  <!-- Footer warning -->
+  <rect x="70" y="940" width="1440" height="75" class="note"/>
+  <text x="790" y="972" text-anchor="middle" class="heading">Draft - not construction-ready until the power and load details are confirmed</text>
+  <text x="790" y="999" text-anchor="middle" class="small">Never route heater current through the ESP32 or a breadboard. Use rated wiring, terminals, fuse, and an independent thermal cutoff.</text>
+</svg>
